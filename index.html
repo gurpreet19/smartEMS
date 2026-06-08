@@ -152,6 +152,11 @@
             box-shadow: 0 0 14px var(--neon-green);
         }
 
+        .dot.danger-state {
+            background: var(--neon-red);
+            box-shadow: 0 0 14px var(--neon-red);
+        }
+
         .metric-row {
             display: flex;
             justify-content: space-between;
@@ -237,7 +242,7 @@
 
     <div id="loader">
         <div class="spinner"></div>
-        <div style="font-size: 13px; letter-spacing: 2px; color: var(--text-muted); font-weight: 600;">INITIALIZING LIVE EMS FEED...</div>
+        <div style="font-size: 13px; letter-spacing: 2px; color: var(--text-muted); font-weight: 600;">STREAMING LIVE EMS DATA...</div>
     </div>
 
     <div class="dashboard-wrapper">
@@ -255,19 +260,19 @@
 
         <div class="grid-layout">
             
-            <!-- Prepaid Wallet Balance Block Container -->
+            <!-- Prepaid Wallet Balance Card Container -->
             <div class="glass-panel wallet-panel">
                 <div>
                     <div class="label"><i class="fa-solid fa-wallet" style="color: var(--neon-purple);"></i> Balance Left</div>
-                    <div class="balance-value" id="dom-balance">₹2,576.84</div>
+                    <div class="balance-value" id="dom-balance">₹--</div>
                 </div>
                 
                 <div class="relay-status-area">
                     <div class="status-dot-label">
-                        <div class="dot"></div>
-                        <span>METER OVERHEAD LINK OK</span>
+                        <div class="dot" id="dom-relay-dot"></div>
+                        <span id="dom-breaker-text">LINK STATUS CHECK...</span>
                     </div>
-                    <div style="font-size: 11px; color: var(--text-muted);" id="dom-sync-time">Sync: Realtime</div>
+                    <div style="font-size: 11px; color: var(--text-muted);" id="dom-sync-time">Sync: Offline</div>
                 </div>
             </div>
 
@@ -277,22 +282,22 @@
                     <div class="source-title grid-accent">
                         <i class="fa-solid fa-bolt-lightning"></i> Main Grid Supply
                     </div>
-                    <span style="font-size: 11px; background: rgba(0, 240, 255, 0.1); padding: 4px 8px; border-radius: 6px; font-weight: 600;" id="dom-power-mode">ACTIVE LINE</span>
+                    <span style="font-size: 11px; background: rgba(0, 240, 255, 0.1); padding: 4px 8px; border-radius: 6px; font-weight: 600;" id="dom-power-mode">--</span>
                 </div>
                 <div class="label">Current Active Load</div>
-                <div class="large-stat" id="dom-grid-load">0.16 <span>kW</span></div>
+                <div class="large-stat" id="dom-grid-load">-- <span>kW</span></div>
                 
                 <div class="metric-row">
                     <span class="label">Today's Grid Bill</span>
-                    <span class="val grid-accent" id="dom-grid-cost">₹11.71</span>
+                    <span class="val grid-accent" id="dom-grid-cost">₹--</span>
                 </div>
                 <div class="metric-row">
                     <span class="label">Fixed Charges Split</span>
-                    <span class="val" id="dom-grid-fixed">₹4.42</span>
+                    <span class="val" id="dom-grid-fixed">₹--</span>
                 </div>
                 <div class="metric-row">
                     <span class="label">Total Meter Reading</span>
-                    <span class="val" id="dom-grid-reading">4218.60 kWh</span>
+                    <span class="val" id="dom-grid-reading">-- kWh</span>
                 </div>
             </div>
 
@@ -305,43 +310,43 @@
                     <span style="font-size: 11px; background: rgba(255, 170, 0, 0.1); padding: 4px 8px; border-radius: 6px; font-weight: 600;">STANDBY</span>
                 </div>
                 <div class="label">Current Active Load</div>
-                <div class="large-stat" id="dom-dg-load">0.00 <span>kW</span></div>
+                <div class="large-stat" id="dom-dg-load">-- <span>kW</span></div>
                 
                 <div class="metric-row">
                     <span class="label">Today's DG Bill</span>
-                    <span class="val dg-accent" id="dom-dg-cost">₹0.00</span>
+                    <span class="val dg-accent" id="dom-dg-cost">₹--</span>
                 </div>
                 <div class="metric-row">
                     <span class="label">Accumulated DG Month</span>
-                    <span class="val" id="dom-dg-month">₹420.00</span>
+                    <span class="val" id="dom-dg-month">₹--</span>
                 </div>
                 <div class="metric-row">
                     <span class="label">Total Meter Reading</span>
-                    <span class="val" id="dom-dg-reading">184.20 kWh</span>
+                    <span class="val" id="dom-dg-reading">-- kWh</span>
                 </div>
             </div>
 
         </div>
 
-        <!-- Monthly Financial Performance Subsections -->
+        <!-- Monthly Performance Metadata Extension Row -->
         <div class="glass-panel" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
             <div>
                 <div class="label">Accumulated Month Grid</div>
-                <div class="large-stat" id="dom-month-grid" style="font-size: 24px; margin-top: 8px; color: var(--neon-blue); margin-bottom: 0;">₹2,140.00</div>
+                <div class="large-stat" id="dom-month-grid" style="font-size: 24px; margin-top: 8px; color: var(--neon-blue); margin-bottom: 0;">₹--</div>
             </div>
             <div>
                 <div class="label">Accumulated Month DG</div>
-                <div class="large-stat" id="dom-month-dg" style="font-size: 24px; margin-top: 8px; color: var(--neon-amber); margin-bottom: 0;">₹420.00</div>
+                <div class="large-stat" id="dom-month-dg" style="font-size: 24px; margin-top: 8px; color: var(--neon-amber); margin-bottom: 0;">₹--</div>
             </div>
             <div>
                 <div class="label">Total System Deductions</div>
-                <div class="large-stat" id="dom-month-total" style="font-size: 24px; margin-top: 8px; color: var(--neon-purple); margin-bottom: 0;">₹2,910.00</div>
+                <div class="large-stat" id="dom-month-total" style="font-size: 24px; margin-top: 8px; color: var(--neon-purple); margin-bottom: 0;">₹--</div>
             </div>
         </div>
     </div>
 
     <script>
-        const configContext = {
+        const payloadConfig = {
             companyCode: "MELLEN",
             caNo: "529",
             username: "10-801",
@@ -359,48 +364,65 @@
 
         async function querySmartMeterPipeline() {
             try {
-                // Phase 1: Call endpoint location maps configuration
+                // Step 1: Call endpoint location maps configuration
                 const ipDiscoveryUrl = "http://emsapp.neptunepm.com/services.asmx/GetIp";
                 const serverHandshake = await fetch(ipDiscoveryUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ "CompCode": configContext.companyCode })
+                    body: JSON.stringify({ "CompCode": payloadConfig.companyCode })
                 });
                 const resolvedRouteMap = await serverHandshake.json();
+                
+                // Unpack the base service target address from standard ASMX wrapper structures
                 const operationalBaseUrl = resolvedRouteMap.d ? JSON.parse(resolvedRouteMap.d).IP : resolvedRouteMap.IP;
 
-                // Phase 2: Call underlying ASMX payload telemetry
+                // Step 2: Call telemetry dashboard metrics
                 const metricsQueryUrl = `${operationalBaseUrl}/MobileAppService/MobileService.asmx/DASHBOARD`;
                 const executionCall = await fetch(metricsQueryUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ "CA_NO": configContext.caNo, "code": configContext.companyCode })
+                    body: JSON.stringify({ "CA_NO": payloadConfig.caNo, "code": payloadConfig.companyCode })
                 });
                 const metricsPayload = await executionCall.json();
-                const data = metricsPayload.d ? metricsPayload.d : metricsPayload;
+                
+                // Safely scrub data wrapper hierarchies out of response structures
+                const liveData = metricsPayload.d ? metricsPayload.d : metricsPayload;
 
-                // Bind parsed response records dynamically into dashboard UI text elements
-                if (data) {
-                    document.getElementById('dom-balance').innerText = `₹${data.pv_bal || '2,576.84'}`;
-                    document.getElementById('dom-grid-load').innerHTML = `${data.Eb_Load || '0.16'} <span>kW</span>`;
-                    document.getElementById('dom-grid-cost').innerText = `₹${data.Today_Eb_Deduction || '11.71'}`;
-                    document.getElementById('dom-grid-fixed').innerText = `₹${data.FixedCharges || '4.42'}`;
+                if (liveData) {
+                    // Injecting validated dynamic data schemas cleanly into layout elements
+                    document.getElementById('dom-balance').innerText = `₹${liveData.pv_bal || '0.00'}`;
+                    document.getElementById('dom-grid-load').innerHTML = `${liveData.Eb_Load || '0.00'} <span>kW</span>`;
+                    document.getElementById('dom-grid-cost').innerText = `₹${liveData.Today_Eb_Deduction || '0.00'}`;
+                    document.getElementById('dom-grid-fixed').innerText = `₹${liveData.FixedCharges || '0.00'}`;
                     
-                    document.getElementById('dom-grid-reading').innerText = `${data.eb_pv_reading || '4218.60'} kWh`;
-                    document.getElementById('dom-dg-load').innerHTML = `${data.Dg_Load || '0.00'} <span>kW</span>`;
-                    document.getElementById('dom-dg-cost').innerText = `₹${data.Today_Dg_Deduction || '0.00'}`;
-                    document.getElementById('dom-dg-reading').innerText = `${data.dg_pv_reading || '184.20'} kWh`;
+                    document.getElementById('dom-grid-reading').innerText = `${liveData.eb_pv_reading || '0.00'} kWh`;
+                    document.getElementById('dom-dg-load').innerHTML = `${liveData.Dg_Load || '0.00'} <span>kW</span>`;
+                    document.getElementById('dom-dg-cost').innerText = `₹${liveData.Today_Dg_Deduction || '0.00'}`;
+                    document.getElementById('dom-dg-reading').innerText = `${liveData.dg_pv_reading || '0.00'} kWh`;
 
-                    document.getElementById('dom-month-grid').innerText = `₹${data.Month_Eb_Deduction || '2,140.00'}`;
-                    document.getElementById('dom-month-dg').innerText = `₹${data.Month_Dg_Deduction || '420.00'}`;
-                    document.getElementById('dom-month-total').innerText = `₹${data.Total_Month_Deduction || '2,910.00'}`;
+                    document.getElementById('dom-month-grid').innerText = `₹${liveData.Month_Eb_Deduction || '0.00'}`;
+                    document.getElementById('dom-month-dg').innerText = `₹${liveData.Month_Dg_Deduction || '0.00'}`;
+                    document.getElementById('dom-month-total').innerText = `₹${liveData.Total_Month_Deduction || '0.00'}`;
                     
-                    if(data.Last_Update_DtTm) {
-                        document.getElementById('dom-sync-time').innerText = `Sync: ${data.Last_Update_DtTm.split(' ')[1] || 'Realtime'}`;
+                    document.getElementById('dom-power-mode').innerText = liveData.PV_POWER_MODE || 'LINE ACTIVE';
+
+                    const dotIndicator = document.getElementById('dom-relay-dot');
+                    const breakerText = document.getElementById('dom-breaker-text');
+                    if (liveData.relay_status === "ON") {
+                        dotIndicator.className = "dot";
+                        breakerText.innerText = "LINE BREAKER CONSTRAINED / ACTIVE";
+                    } else {
+                        dotIndicator.className = "dot danger-state";
+                        breakerText.innerText = "CIRCUIT BREAKER OPENED / DISCONNECTED";
+                    }
+
+                    if(liveData.Last_Update_DtTm) {
+                        document.getElementById('dom-sync-time').innerText = `Sync: ${liveData.Last_Update_DtTm.split(' ')[1] || 'Realtime'}`;
                     }
                 }
             } catch (error) {
-                console.log("Handshake timeout, matching standard layout properties safely.");
+                console.error("Handshake pipeline faulted. Verify CORS extension is currently toggled active.", error);
+                alert("Error connecting directly to smart meter telemetry. Please double check that your CORS extension is active!");
             } finally {
                 document.getElementById('loader').style.display = 'none';
             }
